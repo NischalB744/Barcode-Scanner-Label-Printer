@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+    <head>
+        
+        <title>
+        
+            Bar Code Scanning App!
+        
+        </title>
+        
+        <style type = "text/css">
+        
+           .example-print 
+            {
+                
+                display: none;
+            
+            }
+            
+            @media print 
+            
+            {
+                
+                .example-screen 
+                
+                {
+                    
+                    display: none;
+                
+                }   
+                
+                .example-print 
+                
+                {
+                
+                    display: block;
+                    
+                    position: absolute;
+                    
+                    left:40%;
+                    
+                }
+            }
+            
+        </style>
+        
+        <style type="text/css" media="print">
+        
+            @page
+                
+            {
+                size: auto;   /* auto is the initial value */
+                
+                margin: 0;  /* this affects the margin in the printer settings */
+            
+            }
+            
+        </style>
+        
+        <script type = "text/javascript" src = "jquery.js"></script>
+        
+        <script type = "text/javascript">
+        
+            $(document).ready(function()
+            {
+                
+                $('#barcode').focus();
+                
+                var x_timer;
+                
+                $('#barcode').keyup(function (e) {
+                
+                    clearTimeout(x_timer);
+                    
+                    var barcode_value = $(this).val();
+                    
+                    x_timer = setTimeout(function(){
+                    
+                        check_item_ajax(barcode_value);
+                    
+                    }, 500);
+                
+                });
+            
+                function check_item_ajax(barcode)
+                {
+
+                    $.post('ajaxCheck.php',{'barcode':barcode}, function(data) {
+
+                        $("#feedback").html(data);
+
+                    });
+
+                }
+
+                document.addEventListener('keydown', function(event) 
+                {
+
+                if(event.keyCode == 13 || event.keyCode == 17 || event.keyCode == 74 )
+
+                    event.preventDefault();
+
+                }); 
+
+
+
+                $('#barcode').focus();
+               
+           
+            });
+            
+            function printLabel()
+            {
+                
+                var first_p_label = document.createElement("p");
+                
+                var second_p_label = document.createElement("p");
+                
+                var third_p_label = document.createElement("p");
+               
+                
+                first_p_label.innerHTML = "Item Number: ";
+                
+                second_p_label.innerHTML = "Lot Number: ";
+                
+                third_p_label.innerHTML = "Expiry Date: ";
+                
+                
+                var first_p = document.createTextNode(itemno);
+                
+                var second_p = document.createTextNode(lotno);
+                
+                var third_p = document.createTextNode(expdate);
+                
+                first_p_label.appendChild(first_p);
+                
+                second_p_label.appendChild(second_p);
+                
+                third_p_label.appendChild(third_p);
+                
+                
+                document.getElementById("testPrint").appendChild(first_p_label);
+                
+                document.getElementById("testPrint").appendChild(second_p_label);
+                
+                document.getElementById("testPrint").appendChild(third_p_label);
+                
+                if(batchno != '')
+                    {
+                    
+                        var fourth_p_label = document.createElement("p");
+                    
+                        fourth_p_label.innerHTML = "Batch Number: ";  
+                    
+                        var fourth_p = document.createTextNode(batchno);
+                    
+                        fourth_p_label.appendChild(fourth_p);
+                    
+                        document.getElementById("testPrint").appendChild(fourth_p_label);
+                    }
+                
+                window.print();
+                
+                document.getElementById("testPrint").innerHTML = "";
+                
+                $('#barcode').val("");
+                
+                $('#barcode').focus();
+               
+            }
+            
+        </script>
+    
+    </head>
+
+    <body>
+        
+        <form class="example-screen" name = "form">
+            
+            <h1> LABEL PRINTING SYSTEM</h1>
+        
+            Barcode Value:
+            
+            <input type = "text" id = "barcode" name = "barcode"><span id="user-result"></span>
+            
+            <div id = "feedback"></div>
+            
+        </form>
+        
+        <div class="example-print" id = "testPrint"></div>
+        
+        <button class="example-screen" onclick="self.close()">EXIT</button>
+
+    </body>
+
+</html>

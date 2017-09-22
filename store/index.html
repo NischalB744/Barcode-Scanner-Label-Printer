@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+    <head>
+        
+        <title>
+        
+            AOSS Bar Code Storing App!
+        
+        </title>
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="pageStyle.css">
+        
+        
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+        
+        <script type = "text/javascript" src = "js/jquery.js"></script>
+        
+        <script type = "text/javascript">
+        
+            $(document).ready(function()
+            {
+                
+                $('#barcode').focus();
+                
+                var x_timer;
+                
+                $('#barcode').keyup(function (e) {
+                
+                    clearTimeout(x_timer);
+                    
+                    var barcode_value = $(this).val();
+                    
+                    x_timer = setTimeout(function(){
+                    
+                        check_item_ajax(barcode_value);
+                    
+                    }, 500);
+                
+                });
+            
+                function check_item_ajax(barcode)
+                {
+
+                    $.post('storeCodes.php',{'barcode':barcode}, function(data) {
+
+                        $("#feedbackContainer").html(data);
+
+                    });
+
+                }
+
+                document.addEventListener('keydown', function(event) 
+                {
+
+                if(event.keyCode == 13 || event.keyCode == 17 || event.keyCode == 74 )
+
+                    event.preventDefault();
+
+                }); 
+
+
+
+                $('#barcode').focus();
+               
+           
+            });
+            
+            function clearFields()
+            {
+
+                $('#barcode').val("");
+                $('#barcode').focus();
+                
+                
+ 
+            }
+            
+            function printLabelSuccess()
+            {
+                document.getElementById("testPrint").innerHTML = "";
+                
+                $('#barcode').val("");
+                
+                $('#barcode').focus();
+                var successDiv = document.createElement("div");
+                var successMsg = document.createTextNode("The item was successfully stored in the database.");
+                successDiv.appendChild(successMsg);
+                successDiv.setAttribute("class","alert alert-success");
+                successDiv.setAttribute("role","alert");
+                document.getElementById("feedbackContainer").appendChild(successDiv);
+            }
+            
+            
+            function printLabelFail()
+            {
+                
+                document.getElementById("testPrint").innerHTML = "";
+                
+                $('#barcode').val("");
+                
+                $('#barcode').focus();
+                var successDiv = document.createElement("div");
+                var successMsg = document.createTextNode("Error entering the item in the database. Could be duplicate entry or an invalid entry. Please try again or check the database.");
+                successDiv.appendChild(successMsg);
+                successDiv.setAttribute("class","alert alert-danger");
+                successDiv.setAttribute("role","alert");
+                
+                document.getElementById("feedbackContainer").appendChild(successDiv);
+               
+            }
+            
+        </script>
+    
+    </head>
+    
+   <body>
+      <nav class="navbar navbar-expand-lg navbar-light myNavBar example-screen" style = "background:#539AC6;">
+          <a class="navbar-brand text-white" href="#"><img src = "image/logo.png"></a>
+
+                <h1 id = "pageHeading" class = "display-3 col col-sm-12">AOSS QR Storage System</h1>
+          
+        </nav>
+         
+        
+        <div class = "example-screen container" id = "myContainer" style="margin-top:70px">
+            <form name = "form" class = "example-screen">
+                <div class=" example-screen form-group row">
+                    <label for = "barcode" id = "myLabel" class=" example-screen col-sm-2 col-form-label col-form-label-lg">Barcode</label>
+                    <div class="col-sm-10">
+                        <input type = "text" class=" example-screen form-control form-control-lg" id = "barcode" name = "barcode"><span id="user-result"></span>
+                    </div>
+                </div>
+                
+                
+                
+            </form>
+        </div>
+        <div class = "container" id = "feedbackContainer">
+          
+        </div>
+        <div class="example-screen example-print" id = "testPrint"></div>
+        <div class = "container" id = "buttonContainer">
+                <button class="btn btn-success example-screen myBtn" onclick="clearFields();">CLEAR</button>
+                <button class="btn btn-danger example-screen myBtn" onclick="self.close()">EXIT</button>
+        </div>
+        
+    </body>
+    <footer>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <h1 id = "pageHeading" class = "display-3 col col-sm-12"></h1>
+        </nav>
+    </footer>
+
+</html>

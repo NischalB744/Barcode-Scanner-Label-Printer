@@ -1,0 +1,118 @@
+<link href="https://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet">
+
+.example-print 
+{
+                
+    display: none;
+   
+
+}
+
+@media print 
+{
+
+    .example-screen 
+    {
+
+        display:none;
+
+    }   
+    
+
+    .example-print 
+    {
+
+        display: block;
+
+        position: absolute;
+
+        left:40%;
+        
+        font-size: 28px;
+
+    }
+}
+ @page 
+    {
+        padding:10px;
+        size: auto;   /* auto is the initial value */
+        margin: 5mm;  /* this affects the margin in the printer settings */
+    }
+
+#nav-toggle-button{
+    background-color:white;
+}
+
+#pageHeading
+{
+    font-family: 'Droid Serif', serif;
+    text-indent: 22.5%;
+    font-size: 58px;
+    color: white;
+}
+
+
+@media screen and (max-width: 600px) {
+    #pageHeading
+    {
+        font-size: 36px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    #pageHeading
+    {
+        font-size: 28px;
+    }
+}
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100px;
+    width: 100%;
+    background-color: #539AC6;
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+#myContainer
+{
+    padding:120px 50px 0px 120px;
+}
+
+
+#myNavBar
+{
+    height:160px;
+}
+
+#myLabel
+{
+    font-size: 36px;
+    padding: 5px;
+    bottom:10px;
+}
+
+#buttonContainer
+{
+    margin-left:40%;
+    padding:0px 50px 0px 120px;
+    
+}
+
+.myBtn
+{
+    font-size: 24px;
+    margin:12px;
+    padding:20px 42px;
+}
+
+#feedbackContainer
+{
+    margin-left:25%;
+    padding:20px 50px 20px 120px;
+}
